@@ -1,5 +1,8 @@
 package com.matawan.NiceFCManager.model;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.matawan.NiceFCManager.enumeration.PlayerPosition;
@@ -33,17 +36,23 @@ public class PlayerEntity {
     public void setName(String name) {
         this.name = name;
     }
-    public List<PlayerPosition> getPositions() {
+    public List<PlayerPosition> getPosition() {
         return position;
     }
 
     public void setPosition(List<PlayerPosition> position) {
+        this.position = position;
+    }
+
+    public void addPosition(PlayerPosition ...position) {
+        this.position.addAll(Arrays.asList(position));
+    }
+
+    public void addPosition(List<PlayerPosition> position) {
         this.position.addAll(position);
     }
 
-    public void setPosition(PlayerPosition position) {
-        this.position.add(position);
-    }
+
 
     
 }

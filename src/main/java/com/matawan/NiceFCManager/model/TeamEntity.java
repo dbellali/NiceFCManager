@@ -1,10 +1,16 @@
 package com.matawan.NiceFCManager.model;
 
+import java.util.Arrays;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,8 +25,11 @@ public class TeamEntity {
     private String name;
 
     private String acronym;
-    private Integer playerId;
-    private double buget;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private List<PlayerEntity> players;
+    private double budget;
     
     public Integer getId() {
         return id;
@@ -40,17 +49,28 @@ public class TeamEntity {
     public void setAcronym(String acronym) {
         this.acronym = acronym;
     }
-    public Integer getPlayerId() {
-        return playerId;
+    public List<PlayerEntity> getPlayers() {
+        return players;
     }
-    public void setPlayerId(Integer playerId) {
-        this.playerId = playerId;
+
+    public void setPlayers(List<PlayerEntity> players) {
+        this.players = players;
     }
-    public double getBuget() {
-        return buget;
+
+    public void addPlayers(List<PlayerEntity> players) {
+        this.players.addAll(players);
     }
-    public void setBuget(double buget) {
-        this.buget = buget;
+
+    public void addPlayers(PlayerEntity ...players) {
+        this.players.addAll(Arrays.asList(players));
+
+    }
+
+    public double getBudget() {
+        return budget;
+    }
+    public void setBuget(double budget) {
+        this.budget = budget;
     }
 
     
