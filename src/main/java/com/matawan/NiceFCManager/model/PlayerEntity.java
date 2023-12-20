@@ -1,5 +1,9 @@
 package com.matawan.NiceFCManager.model;
 
+import java.util.List;
+
+import com.matawan.NiceFCManager.enumeration.PlayerPosition;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,8 +19,8 @@ public class PlayerEntity {
     private Integer id;
 
     private String name;
-    private String position;
-    
+    private List<PlayerPosition> position;
+
     public Integer getId() {
         return id;
     }
@@ -29,11 +33,16 @@ public class PlayerEntity {
     public void setName(String name) {
         this.name = name;
     }
-    public String getPosition() {
+    public List<PlayerPosition> getPositions() {
         return position;
     }
-    public void setPosition(String position) {
-        this.position = position;
+
+    public void setPosition(List<PlayerPosition> position) {
+        this.position.addAll(position);
+    }
+
+    public void setPosition(PlayerPosition position) {
+        this.position.add(position);
     }
 
     
