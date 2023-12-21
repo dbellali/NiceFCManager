@@ -16,6 +16,8 @@ import com.matawan.NiceFCManager.dto.TeamCreateDto;
 import com.matawan.NiceFCManager.exception.TeamNotFoundException;
 import com.matawan.NiceFCManager.service.TeamService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/team")
 public class TeamController extends AbstractController {
@@ -35,7 +37,7 @@ public class TeamController extends AbstractController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createTeam(@RequestBody TeamCreateDto team) {
+    public ResponseEntity<?> createTeam(@RequestBody @Valid TeamCreateDto team) {
         ResponseEntity<?> response;
         try {
             response = this.successResponse(HttpStatus.CREATED, this.teamService.createTeam(team));
@@ -59,7 +61,7 @@ public class TeamController extends AbstractController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> updateTeam(@PathVariable Integer id, @RequestBody TeamCreateDto team) {
+    public ResponseEntity<?> updateTeam(@PathVariable Integer id, @RequestBody @Valid TeamCreateDto team) {
         ResponseEntity<?> response;
         try {
             response = this.successResponse(this.teamService.updateTeam(id, team));

@@ -17,6 +17,8 @@ import com.matawan.NiceFCManager.exception.PlayerNotFoundException;
 import com.matawan.NiceFCManager.exception.TeamNotFoundException;
 import com.matawan.NiceFCManager.service.PlayerService;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/team/{teamId}/player")
@@ -26,7 +28,7 @@ public class PlayerController extends AbstractController {
     private PlayerService playerService;
 
     @PostMapping("")
-    public ResponseEntity<?> addPlayer(@PathVariable Integer teamId, @RequestBody PlayerCreateDto player) {
+    public ResponseEntity<?> addPlayer(@PathVariable Integer teamId, @RequestBody @Valid PlayerCreateDto player) {
         ResponseEntity<?> response;
         try {
             response = this.successResponse(HttpStatus.CREATED, this.playerService.addPlayer(teamId, player));
@@ -68,7 +70,7 @@ public class PlayerController extends AbstractController {
     public ResponseEntity<?> updatePlayer(
         @PathVariable Integer teamId, 
         @PathVariable Integer id,
-        @RequestBody PlayerCreateDto player) {
+        @RequestBody @Valid PlayerCreateDto player) {
 
         ResponseEntity<?> response;
         try {
