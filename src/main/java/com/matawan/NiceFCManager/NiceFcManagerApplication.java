@@ -36,7 +36,8 @@ public class NiceFcManagerApplication {
 			TeamCreateDto team = new TeamCreateDto(
 				"team " + i,
 				"T" + i,
-				100 * i
+				100 * i,
+				new ArrayList<PlayerCreateDto>()
 			);
 			teamService.createTeam(team);
 		}

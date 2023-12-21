@@ -28,11 +28,12 @@ public class Team {
 
     private String acronym;
 
+    private double budget;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id", referencedColumnName = "id")
     private List<Player> players;
 
-    private double budget;
     
     
     public Integer getId() {

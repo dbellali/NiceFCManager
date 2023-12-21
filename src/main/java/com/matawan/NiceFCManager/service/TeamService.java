@@ -6,9 +6,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.matawan.NiceFCManager.dto.PlayerCreateDto;
 import com.matawan.NiceFCManager.dto.TeamCreateDto;
 import com.matawan.NiceFCManager.dto.TeamResponseDto;
 import com.matawan.NiceFCManager.exception.TeamNotFoundException;
+import com.matawan.NiceFCManager.model.Player;
 import com.matawan.NiceFCManager.model.Team;
 import com.matawan.NiceFCManager.repository.TeamRepository;
 
@@ -36,6 +38,11 @@ public class TeamService{
 
     public TeamResponseDto createTeam(TeamCreateDto teamDto) {
         Team team = this.modelMapper.map(teamDto, Team.class);
+        if (teamDto.getPlayers() != null) {
+            List<Player> Players = convertPlayersDtoToPlayers(teamDto.getPlayers());
+            team.setPlayers(Players);
+        }
+        
         return saveAndGetDto(team);
     }
 
@@ -58,6 +65,10 @@ public class TeamService{
         return this.modelMapper.map(team, TeamResponseDto.class);
     }
 
-
+    private List<Player> convertPlayersDtoToPlayers(List<PlayerCreateDto> playersDto) {
+        return playersDto.stream()
+                .map(playerDto -> this.modelMapper.map(playerDto, Player.class))
+                .toList();
+    }
 
 }

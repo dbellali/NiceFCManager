@@ -88,11 +88,10 @@ public class PlayerController extends AbstractController {
             response = this.successResponse(HttpStatus.CREATED, this.playerService.removePlayer(teamId, id));
         } catch (TeamNotFoundException | PlayerNotFoundException e) {
             response = this.errorResponse(e);
-        }  
-        // catch (RuntimeException e) {
-        //     System.out.println(e.getMessage());
-        //     response = this.errorResponse();
-        // }
+        }  catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            response = this.errorResponse();
+        }
         return response;    
     }
 
