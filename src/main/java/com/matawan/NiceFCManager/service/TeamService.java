@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.matawan.NiceFCManager.dto.PlayerCreateDto;
@@ -25,10 +27,10 @@ public class TeamService{
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<TeamResponseDto> getAllTeams() {
-        return teamRepository.findAll().stream()
-                .map(team -> this.modelMapper.map(team, TeamResponseDto.class))
-                .toList();
+    public Page<TeamResponseDto> getAllTeams(Pageable pageable) {
+        return teamRepository.findAll(pageable).map(
+            team -> this.modelMapper.map(team, TeamResponseDto.class)
+        );
     }
 
     public TeamResponseDto getTeam(Integer id){

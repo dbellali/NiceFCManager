@@ -1,6 +1,11 @@
 package com.matawan.NiceFCManager.controller;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.matawan.NiceFCManager.dto.TeamCreateDto;
@@ -26,11 +32,19 @@ public class TeamController extends AbstractController {
     private TeamService teamService;
 
     @GetMapping("")
-    public ResponseEntity<?> getAllteams() {
+    public ResponseEntity<?> getAllteams(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "name") String[] sort
+    ) {
         ResponseEntity<?> response;
         try {
-            response = this.successResponse(teamService.getAllTeams());
+            Pageable pageable = PageRequest.of(page, size, Sort.by(this.getSortParams(sort)));
+            response = this.successResponse(teamService.getAllTeams(pageable));
+        } catch (IllegalArgumentException e) {
+            response = this.errorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (RuntimeException e) {
+            System.out.println(e);
             response = this.errorResponse();
         }
         return response;

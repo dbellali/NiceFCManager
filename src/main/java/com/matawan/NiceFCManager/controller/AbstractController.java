@@ -1,5 +1,10 @@
 package com.matawan.NiceFCManager.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -42,6 +47,18 @@ public class AbstractController {
                 .status(httpStatus)
                 .body(response);
     }
+
+    protected List<Order> getSortParams(String[] sort) {
+        if (sort.length % 2 != 0) {
+            throw new IllegalArgumentException("length of arguments must be even");
+        }
+        List<Order> orders = new ArrayList<Order>();
+        for (int i = 0; i < sort.length; i += 2) {
+            orders.add(new Order(Direction.fromString(sort[i+1]), sort[i]));
+        }
+        return orders;
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
