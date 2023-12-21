@@ -29,7 +29,6 @@ public class TeamController extends AbstractController {
         try {
             response = this.successResponse(teamService.getAllTeams());
         } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
             response = this.errorResponse();
         }
         return response;
@@ -60,7 +59,7 @@ public class TeamController extends AbstractController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> getTeam(@PathVariable Integer id, @RequestBody TeamCreateDto team) {
+    public ResponseEntity<?> updateTeam(@PathVariable Integer id, @RequestBody TeamCreateDto team) {
         ResponseEntity<?> response;
         try {
             response = this.successResponse(this.teamService.updateTeam(id, team));

@@ -30,7 +30,7 @@ public class TeamService{
     }
 
     public TeamResponseDto getTeam(Integer id){
-        Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException());
+        Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException(id));
         return this.modelMapper.map(team, TeamResponseDto.class);
     }
 
@@ -40,9 +40,17 @@ public class TeamService{
     }
 
     public TeamResponseDto updateTeam(Integer id, TeamCreateDto teamDto) {
-        Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException());
+        Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException(id));
         this.modelMapper.map(teamDto, team);
         return saveAndGetDto(team);
+    }
+
+    public String deleteTeam(Integer id){
+        if (! teamRepository.existsById(id)) {
+            throw new TeamNotFoundException(id);
+        }
+        teamRepository.deleteById(id);
+        return MSG_SUCCESS_DELETE;
     }
 
     private TeamResponseDto saveAndGetDto(Team team) {
@@ -50,12 +58,6 @@ public class TeamService{
         return this.modelMapper.map(team, TeamResponseDto.class);
     }
 
-    public String deleteTeam(Integer id){
-        if (! teamRepository.existsById(id)) {
-            throw new TeamNotFoundException();
-        }
-        teamRepository.deleteById(id);
-        return MSG_SUCCESS_DELETE;
-    }
+
 
 }

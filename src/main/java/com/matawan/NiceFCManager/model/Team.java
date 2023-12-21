@@ -2,10 +2,12 @@ package com.matawan.NiceFCManager.model;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,7 +28,7 @@ public class Team {
 
     private String acronym;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id", referencedColumnName = "id")
     private List<Player> players;
 
@@ -65,8 +67,19 @@ public class Team {
     }
 
     public void addPlayers(Player ...players) {
-        
         this.players.addAll(Arrays.asList(players));
+    }
+
+    public Optional<Player> getPlayerById(Integer id) {
+        return this.players.stream().filter(player -> player.getId() == id).findFirst();
+    }
+
+    public void removePlayerById(Integer id) {
+        this.players.removeIf(player -> player.getId() == id);
+    }
+
+    public Boolean playerExistsById(Integer id) {
+        return this.players.stream().anyMatch(player -> player.getId() == id);
     }
 
     public double getBudget() {
