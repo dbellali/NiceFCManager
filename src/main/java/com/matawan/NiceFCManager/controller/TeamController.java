@@ -1,9 +1,7 @@
 package com.matawan.NiceFCManager.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,52 +12,76 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.matawan.NiceFCManager.model.TeamEntity;
+import com.matawan.NiceFCManager.dto.TeamCreateDto;
+import com.matawan.NiceFCManager.exception.TeamNotFoundException;
 import com.matawan.NiceFCManager.service.TeamService;
 
 @RestController
 @RequestMapping("/team")
-public class TeamController {
+public class TeamController extends AbstractController {
     
     @Autowired
     private TeamService teamService;
 
     @GetMapping("")
-    public List<TeamEntity> getAllteams() {
-        return teamService.getAllTeams();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getTeamByID(@PathVariable Integer id) {
-        
-        try{
-            TeamEntity teamEntity = teamService.getTeamByID(id);
-            ResponseEntity<TeamEntity> responseEntityTeam = new ResponseEntity<TeamEntity>(teamEntity, HttpStatusCode.valueOf(200));
-            return responseEntityTeam;
-        } catch(Exception e) {
-            String message = e.getMessage();
-            ResponseEntity<String> responseEntityErrorMessage = new ResponseEntity<String>(message, HttpStatusCode.valueOf(404));
-            return responseEntityErrorMessage;
+    public ResponseEntity<?> getAllteams() {
+        ResponseEntity<?> response;
+        try {
+            response = this.successResponse(teamService.getAllTeams());
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            response = this.errorResponse();
         }
+        return response;
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createTeam(@RequestBody TeamEntity team) {
-
+    public ResponseEntity<?> createTeam(@RequestBody TeamCreateDto team) {
+        ResponseEntity<?> response;
         try {
-            return new ResponseEntity<>(this.teamService.createTeam(team), HttpStatusCode.valueOf(201));
+            response = this.successResponse(HttpStatus.CREATED, this.teamService.createTeam(team));
         } catch (RuntimeException e) {
-            return new ResponseEntity<>("Internal Error", HttpStatusCode.valueOf(500));
+            response = this.errorResponse();
         }
+        return response;
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<?> getTeam(@PathVariable Integer id) {
+        ResponseEntity<?> response;
+        try {
+            response = this.successResponse(this.teamService.getTeam(id));
+        } catch (TeamNotFoundException e) {
+            response = this.errorResponse(e);
+        } catch (RuntimeException e) {
+            response = this.errorResponse();
+        }
+        return response;
     }
 
     @PutMapping("{id}")
-    public String updateTeamByID() {
-        return "team updated by id";
+    public ResponseEntity<?> getTeam(@PathVariable Integer id, @RequestBody TeamCreateDto team) {
+        ResponseEntity<?> response;
+        try {
+            response = this.successResponse(this.teamService.updateTeam(id, team));
+        } catch (TeamNotFoundException e) {
+            response = this.errorResponse(e);
+        } catch (RuntimeException e) {
+            response = this.errorResponse();
+        }
+        return response;
     }
 
     @DeleteMapping("{id}")
-    public String deleteTeamrByID() {
-        return "team deleted by id";
+    public ResponseEntity<?> deleteTeam(@PathVariable Integer id) {
+        ResponseEntity<?> response;
+        try {
+            response = this.successResponse(this.teamService.deleteTeam(id));
+        } catch (TeamNotFoundException e) {
+            response = this.errorResponse(e);
+        } catch (RuntimeException e) {
+            response = this.errorResponse();
+        }
+        return response;
     }
 }

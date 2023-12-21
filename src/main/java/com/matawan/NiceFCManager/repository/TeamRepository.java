@@ -1,9 +1,10 @@
 package com.matawan.NiceFCManager.repository;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.matawan.NiceFCManager.model.TeamEntity;
+import com.matawan.NiceFCManager.model.Team;
 
-public interface TeamRepository extends JpaRepository<TeamEntity, Integer> {
+public interface TeamRepository extends JpaRepository<Team, Integer> {
     
 }

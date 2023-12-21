@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "team")
-public class TeamEntity {
+public class Team {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -28,8 +28,10 @@ public class TeamEntity {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id", referencedColumnName = "id")
-    private List<PlayerEntity> players;
+    private List<Player> players;
+
     private double budget;
+    
     
     public Integer getId() {
         return id;
@@ -49,30 +51,28 @@ public class TeamEntity {
     public void setAcronym(String acronym) {
         this.acronym = acronym;
     }
-    public List<PlayerEntity> getPlayers() {
+
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<PlayerEntity> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 
-    public void addPlayers(List<PlayerEntity> players) {
+    public void addPlayers(List<Player> players) {
         this.players.addAll(players);
     }
 
-    public void addPlayers(PlayerEntity ...players) {
+    public void addPlayers(Player ...players) {
+        
         this.players.addAll(Arrays.asList(players));
-
     }
 
     public double getBudget() {
-        return budget;
+        return this.budget;
     }
-    public void setBuget(double budget) {
+    public void setBudget(double budget) {
         this.budget = budget;
     }
-
-    
-   
 }
