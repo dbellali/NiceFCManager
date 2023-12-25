@@ -5,10 +5,14 @@ import java.util.List;
 
 import com.matawan.NiceFCManager.enumeration.PlayerPosition;
 
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -25,6 +29,8 @@ public class Player {
 
     private String name;
     
+    @ElementCollection(targetClass = PlayerPosition.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "player_position", joinColumns = @JoinColumn(name = "player_id"))
     private List<PlayerPosition> position;
    
     public Integer getId() {

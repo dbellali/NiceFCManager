@@ -26,7 +26,6 @@ CREATE TABLE `player` (
   `id` int NOT NULL,
   `team_id` int DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `position` varbinary(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKdvd6ljes11r44igawmpm1mc5s` (`team_id`),
   CONSTRAINT `FKdvd6ljes11r44igawmpm1mc5s` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`)
@@ -39,8 +38,34 @@ CREATE TABLE `player` (
 
 LOCK TABLES `player` WRITE;
 /*!40000 ALTER TABLE `player` DISABLE KEYS */;
-INSERT INTO `player` VALUES (1,4,'player 1 team 4',_binary '�\�\0sr\0java.util.ArrayListx�\��\�a�\0I\0sizexp\0\0\0w\0\0\0~r\04com.matawan.NiceFCManager.enumeration.PlayerPosition\0\0\0\0\0\0\0\0\0\0xr\0java.lang.Enum\0\0\0\0\0\0\0\0\0\0xpt\0	ATTAQUANTx'),(2,4,'player 2 team 4',_binary '�\�\0sr\0java.util.ArrayListx�\��\�a�\0I\0sizexp\0\0\0w\0\0\0~r\04com.matawan.NiceFCManager.enumeration.PlayerPosition\0\0\0\0\0\0\0\0\0\0xr\0java.lang.Enum\0\0\0\0\0\0\0\0\0\0xpt\0	ATTAQUANTx'),(3,1,'player 3 team 1',_binary '�\�\0sr\0java.util.ArrayListx�\��\�a�\0I\0sizexp\0\0\0w\0\0\0~r\04com.matawan.NiceFCManager.enumeration.PlayerPosition\0\0\0\0\0\0\0\0\0\0xr\0java.lang.Enum\0\0\0\0\0\0\0\0\0\0xpt\0	ATTAQUANTx'),(4,4,'player 4 team 4',_binary '�\�\0sr\0java.util.ArrayListx�\��\�a�\0I\0sizexp\0\0\0w\0\0\0~r\04com.matawan.NiceFCManager.enumeration.PlayerPosition\0\0\0\0\0\0\0\0\0\0xr\0java.lang.Enum\0\0\0\0\0\0\0\0\0\0xpt\0	ATTAQUANTx'),(5,1,'player 5 team 1',_binary '�\�\0sr\0java.util.ArrayListx�\��\�a�\0I\0sizexp\0\0\0w\0\0\0~r\04com.matawan.NiceFCManager.enumeration.PlayerPosition\0\0\0\0\0\0\0\0\0\0xr\0java.lang.Enum\0\0\0\0\0\0\0\0\0\0xpt\0	ATTAQUANTx'),(6,4,'player 6 team 4',_binary '�\�\0sr\0java.util.ArrayListx�\��\�a�\0I\0sizexp\0\0\0w\0\0\0~r\04com.matawan.NiceFCManager.enumeration.PlayerPosition\0\0\0\0\0\0\0\0\0\0xr\0java.lang.Enum\0\0\0\0\0\0\0\0\0\0xpt\0	ATTAQUANTx'),(7,3,'player 7 team 3',_binary '�\�\0sr\0java.util.ArrayListx�\��\�a�\0I\0sizexp\0\0\0w\0\0\0~r\04com.matawan.NiceFCManager.enumeration.PlayerPosition\0\0\0\0\0\0\0\0\0\0xr\0java.lang.Enum\0\0\0\0\0\0\0\0\0\0xpt\0	ATTAQUANTx'),(8,3,'player 8 team 3',_binary '�\�\0sr\0java.util.ArrayListx�\��\�a�\0I\0sizexp\0\0\0w\0\0\0~r\04com.matawan.NiceFCManager.enumeration.PlayerPosition\0\0\0\0\0\0\0\0\0\0xr\0java.lang.Enum\0\0\0\0\0\0\0\0\0\0xpt\0	ATTAQUANTx'),(9,2,'player 9 team 2',_binary '�\�\0sr\0java.util.ArrayListx�\��\�a�\0I\0sizexp\0\0\0w\0\0\0~r\04com.matawan.NiceFCManager.enumeration.PlayerPosition\0\0\0\0\0\0\0\0\0\0xr\0java.lang.Enum\0\0\0\0\0\0\0\0\0\0xpt\0	ATTAQUANTx'),(10,4,'player 10 team 4',_binary '�\�\0sr\0java.util.ArrayListx�\��\�a�\0I\0sizexp\0\0\0w\0\0\0~r\04com.matawan.NiceFCManager.enumeration.PlayerPosition\0\0\0\0\0\0\0\0\0\0xr\0java.lang.Enum\0\0\0\0\0\0\0\0\0\0xpt\0	ATTAQUANTx');
+INSERT INTO `player` VALUES (1,1,'player 1 team 1'),(2,1,'player 2 team 1'),(3,4,'player 3 team 4'),(4,1,'player 4 team 1'),(5,5,'player 5 team 5'),(6,2,'player 6 team 2'),(7,1,'player 7 team 1'),(8,5,'player 8 team 5'),(9,3,'player 9 team 3'),(10,3,'player 10 team 3');
 /*!40000 ALTER TABLE `player` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `player_position`
+--
+
+DROP TABLE IF EXISTS `player_position`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `player_position` (
+  `player_id` int NOT NULL,
+  `position` tinyint DEFAULT NULL,
+  KEY `FKc8us8y0ugpnmla980t3nr6ekq` (`player_id`),
+  CONSTRAINT `FKc8us8y0ugpnmla980t3nr6ekq` FOREIGN KEY (`player_id`) REFERENCES `player` (`id`),
+  CONSTRAINT `player_position_chk_1` CHECK ((`position` between 0 and 9))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `player_position`
+--
+
+LOCK TABLES `player_position` WRITE;
+/*!40000 ALTER TABLE `player_position` DISABLE KEYS */;
+INSERT INTO `player_position` VALUES (1,7),(2,7),(3,7),(4,7),(5,7),(6,7),(7,7),(8,7),(9,7),(10,7);
+/*!40000 ALTER TABLE `player_position` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -110,7 +135,7 @@ CREATE TABLE `team_seq` (
 
 LOCK TABLES `team_seq` WRITE;
 /*!40000 ALTER TABLE `team_seq` DISABLE KEYS */;
-INSERT INTO `team_seq` VALUES (151);
+INSERT INTO `team_seq` VALUES (101);
 /*!40000 ALTER TABLE `team_seq` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -123,4 +148,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-25 21:32:46
+-- Dump completed on 2023-12-25 22:14:33
