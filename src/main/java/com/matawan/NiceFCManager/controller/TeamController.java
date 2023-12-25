@@ -35,7 +35,7 @@ public class TeamController extends AbstractController {
     public ResponseEntity<?> getAllteams(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size,
-        @RequestParam(defaultValue = "name") String[] sort
+        @RequestParam(defaultValue = "name,asc") String[] sort
     ) {
         ResponseEntity<?> response;
         try {
